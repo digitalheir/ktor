@@ -177,9 +177,13 @@ internal class Endpoint(
                     if (proxy?.type == ProxyType.HTTP) {
                         startTunnel(requestData, connection.output, connection.input)
                     }
+                    val realAddress = when (proxy) {
+                        null -> address
+                        else -> InetSocketAddress(requestData.url.host, requestData.url.port)
+                    }
                     val tlsSocket = connection.tls(coroutineContext) {
                         takeFrom(config.https)
-                        serverName = serverName ?: address.hostname
+                        serverName = serverName ?: realAddress.hostname
                     }
                     return tlsSocket.connection()
                 } catch (cause: Throwable) {
@@ -188,7 +192,7 @@ internal class Endpoint(
                     } catch (_: Throwable) {
                     }
 
-                    connectionFactory.release()
+                    connectionFactory.release(address)
                     throw cause
                 }
             }
@@ -229,7 +233,8 @@ internal class Endpoint(
     }
 
     private fun releaseConnection() {
-        connectionFactory.release()
+        val address = InetSocketAddress(host, port)
+        connectionFactory.release(address)
         connections.decrementAndGet()
     }
 

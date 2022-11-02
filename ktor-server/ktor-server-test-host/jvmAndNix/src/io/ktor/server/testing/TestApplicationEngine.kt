@@ -19,6 +19,10 @@ import kotlinx.atomicfu.*
 import kotlinx.coroutines.*
 import kotlin.coroutines.*
 
+@OptIn(InternalAPI::class)
+@PublicAPICandidate("2.2.0")
+internal const val CONFIG_KEY_THROW_ON_EXCEPTION = "ktor.test.throwOnException"
+
 /**
  * A test engine that provides a way to simulate application calls to the existing application module(s)
  * without actual HTTP connection.
@@ -96,7 +100,13 @@ class TestApplicationEngine(
     }
 
     private suspend fun PipelineContext<Unit, ApplicationCall>.handleTestFailure(cause: Throwable) {
-        tryRespondError(defaultExceptionStatusCode(cause) ?: throw cause)
+        val throwOnException = environment.config
+            .propertyOrNull(CONFIG_KEY_THROW_ON_EXCEPTION)
+            ?.getString()?.toBoolean() ?: true
+        tryRespondError(
+            defaultExceptionStatusCode(cause)
+                ?: if (throwOnException) throw cause else HttpStatusCode.InternalServerError
+        )
     }
 
     private suspend fun PipelineContext<Unit, ApplicationCall>.tryRespondError(statusCode: HttpStatusCode) {
@@ -109,16 +119,19 @@ class TestApplicationEngine(
     }
 
     override suspend fun resolvedConnectors(): List<EngineConnectorConfig> {
+        if (environment.connectors.isNotEmpty()) {
+            return environment.connectors
+        }
         return listOf(
             object : EngineConnectorConfig {
                 override val type: ConnectorType = ConnectorType.HTTP
-                override val host: String = environment.connectors.firstOrNull()?.host ?: "localhost"
-                override val port: Int = environment.connectors.firstOrNull()?.port ?: 80
+                override val host: String = "localhost"
+                override val port: Int = 80
             },
             object : EngineConnectorConfig {
                 override val type: ConnectorType = ConnectorType.HTTPS
-                override val host: String = environment.connectors.firstOrNull()?.host ?: "localhost"
-                override val port: Int = environment.connectors.firstOrNull()?.port ?: 443
+                override val host: String = "localhost"
+                override val port: Int = 443
             }
         )
     }

@@ -1,3 +1,98 @@
+# 2.1.3
+> Published 26 October 2022
+
+* JS: window.location.origin returns null when executed in iframe via srcdoc attribute ([KTOR-4993](https://youtrack.jetbrains.com/issue/KTOR-4993))
+* SensitivityWatchEventModifier - Move the reflection call of this modifier out from the Ktor Core ([KTOR-1647](https://youtrack.jetbrains.com/issue/KTOR-1647))
+* "java.lang.IllegalArgumentException: Failed requirement." in SelectorManagerSupport ([KTOR-2914](https://youtrack.jetbrains.com/issue/KTOR-2914))
+* HOCON: CLI parameters don't override custom properties since 2.1.0 ([KTOR-5000](https://youtrack.jetbrains.com/issue/KTOR-5000))
+* Websockets timeout doesn't cause a close of a connection ([KTOR-3504](https://youtrack.jetbrains.com/issue/KTOR-3504))
+* DefaultHeaders: a header is duplicated in a StatusPages's handler ([KTOR-4990](https://youtrack.jetbrains.com/issue/KTOR-4990))
+* Websockets: timeout doesn't cause closing of incoming and outgoing channels ([KTOR-2430](https://youtrack.jetbrains.com/issue/KTOR-2430))
+* RFC 3986 recommendation for encoding URI is NOT followed ([KTOR-993](https://youtrack.jetbrains.com/issue/KTOR-993))
+* Cookies: Invalid encoding of cookies' values since 1.4.0 ([KTOR-917](https://youtrack.jetbrains.com/issue/KTOR-917))
+* ByteReadChannel is unable to read files with long lines ([KTOR-2588](https://youtrack.jetbrains.com/issue/KTOR-2588))
+* WebSocketDeflateExtension configureProtocols always failed with stackOverflow ([KTOR-4916](https://youtrack.jetbrains.com/issue/KTOR-4916))
+* Update Kotlin to 1.7.20 ([KTOR-4963](https://youtrack.jetbrains.com/issue/KTOR-4963))
+* Netty HTTP/2: response headers contain ":status" header and that leads to IllegalHeaderNameException in the ConditionalHeaders plugin ([KTOR-4943](https://youtrack.jetbrains.com/issue/KTOR-4943))
+* Maven: ktor-server-test-host-jvm causes dependency error starting from Ktor 2.0.3 ([KTOR-4900](https://youtrack.jetbrains.com/issue/KTOR-4900))
+* Autoreloading: "Flow invariant is violated" error since Ktor 2.0.3 ([KTOR-4926](https://youtrack.jetbrains.com/issue/KTOR-4926))
+* Autoreloading: ClassCastException when retrieving plugins in testApplication ([KTOR-4729](https://youtrack.jetbrains.com/issue/KTOR-4729))
+* CIO engine has wrong doc for request timeout ([KTOR-4941](https://youtrack.jetbrains.com/issue/KTOR-4941))
+* CIO: A request through a proxy server results in 403 from Cloudflare ([KTOR-4925](https://youtrack.jetbrains.com/issue/KTOR-4925))
+
+# 2.1.2
+> Published 29 September 2022
+
+* HttpCacheEntry ignoring Request Cache-Control directives ([KTOR-4894](https://youtrack.jetbrains.com/issue/KTOR-4894))
+* testApplication does not handle port and connectors ([KTOR-4875](https://youtrack.jetbrains.com/issue/KTOR-4875))
+* Native: Wrong status code when requesting with DELETE method and body ([KTOR-3566](https://youtrack.jetbrains.com/issue/KTOR-3566))
+* Default host address 0.0.0.0 isn't reachable on Windows ([KTOR-4834](https://youtrack.jetbrains.com/issue/KTOR-4834))
+* TestApplicationEngine error handling is inconsistent with DefaultEnginePipeline, breaking clients ([KTOR-4009](https://youtrack.jetbrains.com/issue/KTOR-4009))
+* Routing: Wrong content-type results in 400 Bad Request instead of 415 Unsupported Media type ([KTOR-4849](https://youtrack.jetbrains.com/issue/KTOR-4849))
+
+# 2.1.1
+> Published 6 September 2022
+
+* CIO: responses are received with a huge delay on JVM Windows (due to reverse DNS lookup internally) ([KTOR-4827](https://youtrack.jetbrains.com/issue/KTOR-4827))
+* Netty HTTP/2 not working ([KTOR-578](https://youtrack.jetbrains.com/issue/KTOR-578))
+* HTTP/2 push fails with Netty engine ([KTOR-800](https://youtrack.jetbrains.com/issue/KTOR-800))
+* HttpCookies: no space between cookie pairs ([KTOR-3854](https://youtrack.jetbrains.com/issue/KTOR-3854))
+* Netty ALPN provider detection not working ([KTOR-4712](https://youtrack.jetbrains.com/issue/KTOR-4712))
+* CIO: Connection reset by peer on MacOS ([KTOR-2036](https://youtrack.jetbrains.com/issue/KTOR-2036))
+* CallLogging MDC with sessions: Application feature Sessions is not installed ([KTOR-550](https://youtrack.jetbrains.com/issue/KTOR-550))
+* Deprecate Public API with Atomicfu Declarations ([KTOR-4774](https://youtrack.jetbrains.com/issue/KTOR-4774))
+* Deprecate receiveOrNull because it's confusing ([KTOR-4772](https://youtrack.jetbrains.com/issue/KTOR-4772))
+* Server ContentNegotiation Plugin doesn't check ignoredTypes for Request Body ([KTOR-4770](https://youtrack.jetbrains.com/issue/KTOR-4770))
+* IllegalArgumentException is thrown when UnixSocketAddress.path is accessed on JVM (JDK 16+) ([KTOR-4695](https://youtrack.jetbrains.com/issue/KTOR-4695))
+* WebSocketDeflateExtension not following RFC ([KTOR-4696](https://youtrack.jetbrains.com/issue/KTOR-4696))
+* The parseWebSocketExtensions function behaves incorrectly ([KTOR-3189](https://youtrack.jetbrains.com/issue/KTOR-3189))
+* Receive non-Nullable Type Throws NPE in Case of Failure ([KTOR-4771](https://youtrack.jetbrains.com/issue/KTOR-4771))
+* Darwin: Symbol not found: _OBJC_CLASS_$_NSURLSessionWebSocketMessage on iOS 12 ([KTOR-4159](https://youtrack.jetbrains.com/issue/KTOR-4159))
+* Fix Merging Date Headers on the Client ([KTOR-4782](https://youtrack.jetbrains.com/issue/KTOR-4782))
+* Replace exception in InputStreamAdapter and OutputStreamAdapter constructors with warning message If parking ([KTOR-4736](https://youtrack.jetbrains.com/issue/KTOR-4736))
+* Clearing Session Cookie in Chrome 80+ with SameSite and Secure ([KTOR-437](https://youtrack.jetbrains.com/issue/KTOR-437))
+* The `OutgoingContent.toByteArray()` stalls when used in combination with a `OutgoingContent.WriteChannelContent` ([KTOR-2126](https://youtrack.jetbrains.com/issue/KTOR-2126))
+* Missing Content-Type header in a request ([KTOR-1407](https://youtrack.jetbrains.com/issue/KTOR-1407))
+* Crash when making requests from browser inside of web worker ([KTOR-4715](https://youtrack.jetbrains.com/issue/KTOR-4715))
+* An error occurs when there is a binary such as protobuf in the response body of error ([KTOR-1619](https://youtrack.jetbrains.com/issue/KTOR-1619))
+* CallLogging configured MDC entries are not passed to StatusPages exception handlers ([KTOR-4193](https://youtrack.jetbrains.com/issue/KTOR-4193))
+* LocalFileContent incorrectly relies on the last modification time of a file to check its existence ([KTOR-4707](https://youtrack.jetbrains.com/issue/KTOR-4707))
+* Sessions: WSS in combination with Secure cookies throws IllegalArgumentException ([KTOR-4697](https://youtrack.jetbrains.com/issue/KTOR-4697))
+* Json request failure with configured form authentication ([KTOR-678](https://youtrack.jetbrains.com/issue/KTOR-678))
+
+# 2.1.0
+> Published 11 August 2022
+
+* Add YAML Configuration Format Support ([KTOR-3572](https://youtrack.jetbrains.com/issue/KTOR-3572))
+* Allow overriding HSTS settings per host ([KTOR-4578](https://youtrack.jetbrains.com/issue/KTOR-4578))
+* CORS: Pattern matching for origin ([KTOR-316](https://youtrack.jetbrains.com/issue/KTOR-316))
+* Darwin: Allow setting custom NSURLSession ([KTOR-583](https://youtrack.jetbrains.com/issue/KTOR-583))
+* Support setting caching options on call ([KTOR-457](https://youtrack.jetbrains.com/issue/KTOR-457))
+* Revert default behavior of string encoding for ContentNegotiation and JsonPlugin ([KTOR-4739](https://youtrack.jetbrains.com/issue/KTOR-4739))
+* Make Content-Length header validation optional ([KTOR-4655](https://youtrack.jetbrains.com/issue/KTOR-4655))
+* Client resources plugin miss builders for PATCH method ([KTOR-4658](https://youtrack.jetbrains.com/issue/KTOR-4658))
+* The awaitSuspend method wakes up early in closed ByteChannelSequential ([KTOR-4597](https://youtrack.jetbrains.com/issue/KTOR-4597))
+* HttpCache plugin does not support max-stale directive ([KTOR-4610](https://youtrack.jetbrains.com/issue/KTOR-4610))
+* Incoming request body validation ([KTOR-503](https://youtrack.jetbrains.com/issue/KTOR-503))
+* Client does not support sending or receiving json null value ([KTOR-745](https://youtrack.jetbrains.com/issue/KTOR-745))
+* Jetty: Content Length exception when body size is greater than 4096 bytes ([KTOR-4622](https://youtrack.jetbrains.com/issue/KTOR-4622))
+* Darwin: configureRequest doesn't actually configure a NSMutableURLRequest when HTTP request is made ([KTOR-4719](https://youtrack.jetbrains.com/issue/KTOR-4719))
+* OAuth2: Allow sending extra parameters for authorization and access token requests ([KTOR-2128](https://youtrack.jetbrains.com/issue/KTOR-2128))
+* Java engine: Allow configuring HTTP version ([KTOR-4609](https://youtrack.jetbrains.com/issue/KTOR-4609))
+* ContentEncoding: body&lt;ByteArray&gt;() receives truncated array ([KTOR-4653](https://youtrack.jetbrains.com/issue/KTOR-4653))
+* Support configuring Netty codec limits via application config ([KTOR-4636](https://youtrack.jetbrains.com/issue/KTOR-4636))
+* [OkHttp] StreamRequestBody should override isOneShot or allow multiple reads of request body ([KTOR-4637](https://youtrack.jetbrains.com/issue/KTOR-4637))
+* OverridingClassLoader fails to delegate to parent for resources ([KTOR-4004](https://youtrack.jetbrains.com/issue/KTOR-4004))
+* OkHttp and iOS: request with only-if-cache directive in Cache-Control header fails with 504 when match is stale ([KTOR-4127](https://youtrack.jetbrains.com/issue/KTOR-4127))
+* Allow Pebble to use Accepted Language header for built-in i18n support ([KTOR-4593](https://youtrack.jetbrains.com/issue/KTOR-4593))
+* Test engine can't handle concurrent requests ([KTOR-4572](https://youtrack.jetbrains.com/issue/KTOR-4572))
+* Parameters of cloned UrlBuilder affect parameters of an original builder ([KTOR-4573](https://youtrack.jetbrains.com/issue/KTOR-4573))
+* Reified type causes ApplicationCall.receive() throw UnsupportedOperationException ([KTOR-3715](https://youtrack.jetbrains.com/issue/KTOR-3715))
+* ApplicationConfig lacks the ability to export a part of the config to a third-party library ([KTOR-4416](https://youtrack.jetbrains.com/issue/KTOR-4416))
+* Path parameter doesn't get encoded in type safe requests ([KTOR-3953](https://youtrack.jetbrains.com/issue/KTOR-3953))
+* Update Kotlin to 1.7.0 ([KTOR-4450](https://youtrack.jetbrains.com/issue/KTOR-4450))
+* Bump jteVersion from 2.0.3 to 2.1.2 ([KTOR-4648](https://youtrack.jetbrains.com/issue/KTOR-4648))
+
 # 2.0.3
 > Published 28 June 2022
 

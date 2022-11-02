@@ -12,15 +12,17 @@ import kotlin.coroutines.*
 @OptIn(UnsafeNumber::class)
 internal class DarwinSession(
     private val config: DarwinClientEngineConfig,
-    private val requestQueue: NSOperationQueue
+    requestQueue: NSOperationQueue
 ) : Closeable {
     private val closed = atomic(false)
     private val responseReader = DarwinResponseReader(config)
 
-    private val session: NSURLSession = config.preconfiguredSession ?: createSession()
+    private val session: NSURLSession = config.preconfiguredSession
+        ?: createSession(config, responseReader, requestQueue)
 
     internal suspend fun execute(request: HttpRequestData, callContext: CoroutineContext): HttpResponseData {
         val nativeRequest = request.toNSUrlRequest()
+            .apply(config.requestConfig)
         val task = session.dataTaskWithRequest(nativeRequest)
 
         val result: CompletableDeferred<HttpResponseData> = responseReader.read(request, callContext, task)
@@ -38,19 +40,23 @@ internal class DarwinSession(
         if (!closed.compareAndSet(false, true)) return
         session.finishTasksAndInvalidate()
     }
+}
 
-    private fun createSession(): NSURLSession {
-        val configuration = NSURLSessionConfiguration.defaultSessionConfiguration().apply {
-            setupProxy(config)
-            setHTTPCookieStorage(null)
+internal fun createSession(
+    config: DarwinClientEngineConfig,
+    delegate: NSURLSessionDelegateProtocol,
+    requestQueue: NSOperationQueue
+): NSURLSession {
+    val configuration = NSURLSessionConfiguration.defaultSessionConfiguration().apply {
+        setupProxy(config)
+        setHTTPCookieStorage(null)
 
-            config.sessionConfig(this)
-        }
-
-        return NSURLSession.sessionWithConfiguration(
-            configuration,
-            responseReader,
-            delegateQueue = requestQueue
-        )
+        config.sessionConfig(this)
     }
+
+    return NSURLSession.sessionWithConfiguration(
+        configuration,
+        delegate,
+        delegateQueue = requestQueue
+    )
 }

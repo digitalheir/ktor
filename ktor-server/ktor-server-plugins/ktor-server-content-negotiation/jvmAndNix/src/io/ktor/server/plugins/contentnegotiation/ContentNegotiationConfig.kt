@@ -5,9 +5,19 @@
 package io.ktor.server.plugins.contentnegotiation
 
 import io.ktor.http.*
+import io.ktor.http.content.*
 import io.ktor.serialization.*
 import io.ktor.util.*
+import io.ktor.utils.io.*
 import kotlin.reflect.*
+
+internal val DefaultCommonIgnoredTypes = setOf<KClass<*>>(
+    ByteArray::class,
+    String::class,
+    HttpStatusCode::class,
+    ByteReadChannel::class,
+    OutgoingContent::class
+)
 
 internal expect val DefaultIgnoredTypes: Set<KClass<*>>
 
@@ -19,8 +29,7 @@ public class ContentNegotiationConfig : Configuration {
     internal val registrations = mutableListOf<ConverterRegistration>()
     internal val acceptContributors = mutableListOf<AcceptHeaderContributor>()
 
-    @PublishedApi
-    internal val ignoredTypes: MutableSet<KClass<*>> = DefaultIgnoredTypes.toMutableSet()
+    internal val ignoredTypes: MutableSet<KClass<*>> = (DefaultCommonIgnoredTypes + DefaultIgnoredTypes).toMutableSet()
 
     /**
      * Checks that the `ContentType` header value of a response suits the `Accept` header value of a request.
@@ -61,6 +70,36 @@ public class ContentNegotiationConfig : Configuration {
      * The list contains the [HttpStatusCode] type by default.
      */
     public inline fun <reified T> ignoreType() {
-        ignoredTypes.add(T::class)
+        ignoreType(T::class)
+    }
+
+    /**
+     * Remove [T] from the list of types that should be ignored by [ContentNegotiation].
+     */
+    public inline fun <reified T> removeIgnoredType() {
+        removeIgnoredType(T::class)
+    }
+
+    /**
+     * Remove [type] from the list of types that should be ignored by [ContentNegotiation].
+     */
+    public fun removeIgnoredType(type: KClass<*>) {
+        ignoredTypes.remove(type)
+    }
+
+    /**
+     * Adds a [type] to the list of types that should be ignored by [ContentNegotiation].
+     *
+     * The list contains the [HttpStatusCode], [ByteArray], [String] and streaming types by default.
+     */
+    public fun ignoreType(type: KClass<*>) {
+        ignoredTypes.add(type)
+    }
+
+    /**
+     * Clear all configured ignored types including defaults.
+     */
+    public fun clearIgnoredTypes() {
+        ignoredTypes.clear()
     }
 }

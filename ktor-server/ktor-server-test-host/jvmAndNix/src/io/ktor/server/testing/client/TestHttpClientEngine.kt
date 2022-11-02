@@ -55,7 +55,7 @@ public class TestHttpClientEngine(override val config: TestHttpClientConfig) : H
         }
 
         val testServerCall = with(data) {
-            runRequest(method, url.fullPath, headers, body, url.protocol)
+            runRequest(method, url, headers, body, url.protocol)
         }
 
         return with(testServerCall.response) {
@@ -65,13 +65,14 @@ public class TestHttpClientEngine(override val config: TestHttpClientConfig) : H
 
     private suspend fun runRequest(
         method: HttpMethod,
-        url: String,
+        url: Url,
         headers: Headers,
         content: OutgoingContent,
         protocol: URLProtocol
     ): TestApplicationCall {
         return app.handleRequestNonBlocking {
-            this.uri = url
+            this.uri = url.fullPath
+            this.port = url.port
             this.method = method
             appendRequestHeaders(headers, content)
             this.protocol = protocol.name
@@ -93,27 +94,14 @@ public class TestHttpClientEngine(override val config: TestHttpClientConfig) : H
         callContext()
     )
 
+    @OptIn(InternalAPI::class)
     internal fun TestApplicationRequest.appendRequestHeaders(
         headers: Headers,
         content: OutgoingContent
     ) {
-        headers.flattenForEach { name, value ->
-            if (HttpHeaders.ContentLength == name) return@flattenForEach // set later
-            if (HttpHeaders.ContentType == name) return@flattenForEach // set later
+        mergeHeaders(headers, content) { name, value ->
             addHeader(name, value)
         }
-
-        content.headers.flattenForEach { name, value ->
-            if (HttpHeaders.ContentLength == name) return@flattenForEach // TODO: throw exception for unsafe header?
-            if (HttpHeaders.ContentType == name) return@flattenForEach
-            addHeader(name, value)
-        }
-
-        val contentLength = headers[HttpHeaders.ContentLength] ?: content.contentLength?.toString()
-        val contentType = headers[HttpHeaders.ContentType] ?: content.contentType?.toString()
-
-        contentLength?.let { addHeader(HttpHeaders.ContentLength, it) }
-        contentType?.let { addHeader(HttpHeaders.ContentType, it) }
     }
 
     override fun close() {
